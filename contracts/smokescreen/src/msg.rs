@@ -16,6 +16,10 @@ pub enum MigrateMsg {
         rabbits: Vec<u64>,
         // hats are proposals to show
         hats: Vec<u64>,
+        // should we remove the hooks?
+        remove_hooks: bool,
+        // should we add the hooks back?
+        add_hooks: bool,
     },
 }
 

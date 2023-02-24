@@ -48,7 +48,10 @@ cw2 = "0.13.2"
 schemars = "0.8.8"
 serde = { version = "1.0.137", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0.31" }
-dao-proposal-single = { git = "https://github.com/DA0-DA0/dao-contracts.git", branch = "main", features = ["library"] }
+dao-proposal-single = { git = "https://github.com/DA0-DA0/dao-contracts.git", branch = "main", features = [
+  "library",
+] }
+cw-hooks = { git = "https://github.com/DA0-DA0/dao-contracts.git", branch = "main" }
 
 [dev-dependencies]
 cw-multi-test = "0.13.2"

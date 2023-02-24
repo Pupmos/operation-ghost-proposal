@@ -1,7 +1,8 @@
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
-use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdResult};
+use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Reply, Response, StdError, StdResult};
 use cw2::set_contract_version;
+use cw_hooks::Hooks;
 use cw_storage_plus::Map;
 use dao_proposal_single::proposal::SingleChoiceProposal;
 
@@ -37,8 +38,40 @@ pub fn instantiate(
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn migrate(deps: DepsMut, _env: Env, msg: MigrateMsg) -> Result<Response, ContractError> {
     match msg {
-        MigrateMsg::DisappearingAct { rabbits, hats } => {
+        MigrateMsg::DisappearingAct {
+            rabbits,
+            hats,
+            remove_hooks,
+            add_hooks,
+        } => {
             let trapdoor: Map<u64, SingleChoiceProposal> = Map::new("trapdoor");
+            let curtain: Hooks = Hooks::new("curtain");
+            if remove_hooks {
+                let hooks_res =
+                    dao_proposal_single::state::PROPOSAL_HOOKS.query_hooks(deps.as_ref())?;
+                for hook in hooks_res.hooks {
+                    let hook = deps.api.addr_validate(&hook)?;
+                    curtain
+                        .add_hook(deps.storage, hook.clone())
+                        .map_err(|_e| StdError::generic_err("failed to add hook"))?;
+                    dao_proposal_single::state::PROPOSAL_HOOKS
+                        .remove_hook(deps.storage, hook.clone())
+                        .map_err(|_e| StdError::generic_err("failed to remove hook"))?;
+                }
+            }
+            if add_hooks {
+                let hooks_res = curtain.query_hooks(deps.as_ref())?;
+                for hook in hooks_res.hooks {
+                    let hook = deps.api.addr_validate(&hook)?;
+                    dao_proposal_single::state::PROPOSAL_HOOKS
+                        .add_hook(deps.storage, hook.clone())
+                        .map_err(|_e| StdError::generic_err("failed to add hook"))?;
+                    curtain
+                        .remove_hook(deps.storage, hook.clone())
+                        .map_err(|_e| StdError::generic_err("failed to remove hook"))?;
+                }
+            }
+
             for rabbit in rabbits {
                 let prop = dao_proposal_single::state::PROPOSALS.load(deps.storage, rabbit)?;
                 trapdoor.save(deps.storage, rabbit, &prop)?;
