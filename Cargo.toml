@@ -13,3 +13,33 @@ opt-level = 3
 overflow-checks = true
 panic = 'abort'
 rpath = false
+
+[workspace.dependencies]
+cosmwasm-std = { version = "1.1", features = ["ibc3"] }
+cosmwasm-storage = { version = "1.1" }
+cosmwasm-schema = { version = "1.1" }
+cw-utils = "0.16"
+thiserror = { version = "1.0.30" }
+cw-storage-plus = "0.16"
+cw2 = "0.16"
+cw20 = "0.16"
+cw721 = "0.16"
+cw20-base = "0.16"
+cw-multi-test = "0.16"
+cw721-base = "0.16"
+cw-controllers = "0.16"
+anyhow = { version = "1.0.51" }
+cw4-group = "0.16"
+rand = "0.8"
+cw4 = "0.16"
+cw3 = "0.16"
+serde = "1.0"
+proc-macro2 = "1.0"
+quote = "1.0"
+syn = { version = "1.0", features = ["derive"] }
+wynd-utils = "0.4.1"
+
+cw-paginate = { version = "v1.0.0", git = "https://github.com/DA0-DA0/dao-contracts.git" }
+cw20-stake-v1 = { package = "cw20-stake", version = "0.2.6", git = "https://github.com/DA0-DA0/dao-contracts.git", tag = "v1.0.0" }
+cw-utils-v1 = { package = "cw-utils", version = "0.13" }
+cw-ownable = { git = "https://github.com/steak-enjoyers/cw-plus-plus", rev = "50d4d9333305894457e5028072a0465f4635b15b" }
