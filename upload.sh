@@ -1,4 +1,4 @@
-junod tx wasm store ./artifacts/trapdoor.wasm \
+junod tx wasm store ./artifacts/mirrorbox.wasm \
   --node https://juno-rpc.polkachu.com:443 \
   --chain-id juno-1 --from flix-pupmos-burner \
   --gas-prices 1.5ujuno --gas 5000000 \

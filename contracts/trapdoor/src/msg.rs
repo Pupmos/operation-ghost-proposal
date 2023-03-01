@@ -1,5 +1,5 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::{CosmosMsg, Uint128};
+use cosmwasm_std::Uint128;
 
 /// Message type for `instantiate` entry_point
 #[cw_serde]
